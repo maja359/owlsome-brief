@@ -206,12 +206,12 @@ const SECTIONS = [
     ]},
 
   /* ===== MODULE: BRAND + LAUNCH ENGINE (full brand discovery) ===== */
-  { module:"Brand + Launch Engine", tag:"Twoja marka", title:"Głębszy obraz",
+  { module:"Brand + Launch Engine", tag:"Twoja marka", title:"Wejdźmy głębiej",
     fields:[
       { id:"brand_diff", type:"textarea", req:true, label:"Co ją wyróżnia? Jaki problem rozwiązuje?" },
       { id:"brand_oneline", type:"textarea", label:"Jeśli ktoś ma zapamiętać jedną rzecz o Twojej marce, co to powinno być?" },
       { id:"tagline", type:"text", label:"Hasło / tagline?",
-        hint:"Jeśli macie: jakie jest i czy ma być częścią logo, czy tylko komunikacji?" }
+        hint:"Jeśli masz: jakie jest i czy ma być częścią logo, czy żyć tylko w komunikacji?" }
     ]},
 
   { module:"Brand + Launch Engine", tag:"Odbiorcy i rynek", title:"Dla kogo to jest",
@@ -243,14 +243,14 @@ const SECTIONS = [
       { id:"moodboard_link", type:"url", label:"Moodboard / Pinterest / link z inspiracjami",
         hint:"Wklej link. Google Drive albo Pinterest, oba działają." },
       { id:"admire", type:"textarea", label:"Marki, których wygląd podziwiasz (z dowolnej branży) i dlaczego" },
-      { id:"colors", type:"text", label:"Kolory, które kochasz / których unikać" },
+      { id:"colors", type:"text", label:"Kolory, które kochasz / których lepiej unikać" },
       { id:"palette", type:"multi", label:"Charakter palety",
         options:["Stonowana","Pastelowa","Nasycona","Monochromatyczna","Ziemista","Jasna i świeża"] },
       { id:"type_feel", type:"choice", label:"Charakter typografii",
         options:["Klasyczna szeryfowa","Nowoczesna bezszeryfowa","Elegancka / wyrafinowana","Mocna / wyrazista","Odręczna","Mieszana"] },
-      { id:"logo_type", type:"choice", label:"Typ logo, ku któremu się skłaniasz",
+      { id:"logo_type", type:"choice", label:"W stronę jakiego logo się skłaniasz?",
         options:["Sam napis (wordmark)","Symbol + napis","Symbol wpleciony w napis","Nie wiem, doradźcie"] },
-      { id:"logo_link", type:"url", label:"Kilka logo lub wizualizacji, które oddają kierunek",
+      { id:"logo_link", type:"url", label:"Kilka logo albo grafik, które oddają kierunek",
         hint:"Wklej link do Drive / Pinterest." }
     ]},
 
@@ -258,7 +258,7 @@ const SECTIONS = [
   { module:"Opakowania", tag:"Opakowania", title:"Produkty",
     fields:[
       { id:"products", type:"textarea", req:true, label:"Wypisz produkty, które będziemy projektować",
-        hint:"Nazwa, pojemność, krótki opis i ewentualne cechy szczególne, jeden produkt w linii." },
+        hint:"Nazwa, pojemność, krótki opis i ewentualne cechy szczególne, każdy w osobnej linijce." },
       { id:"front_copy", type:"textarea", req:true, label:"Treść na froncie opakowania dla każdego produktu",
         hint:"Nazwa, pojemność, krótki opis tak, jak ma widnieć na froncie." },
       { id:"pack_format", type:"text", req:true, label:"Format i materiał, jaki masz na myśli",
@@ -267,15 +267,15 @@ const SECTIONS = [
         options:["Tłoczenie folią","Tłoczenie wypukłe / wklęsłe","Lakier UV punktowy","Mat","Żadne","Nie wiem"] },
       { id:"pack_where", type:"choice", label:"Gdzie będą sprzedawane?",
         options:["Tylko online","Sklepy stacjonarne","Oba"] },
-      { id:"pack_reg", type:"text", label:"Wymogi dotyczące ekologii lub regulacji?" }
+      { id:"pack_reg", type:"text", label:"Wymogi ekologiczne lub prawne?" }
     ]},
 
   /* ===== MODULE: PROJEKT STRONY ===== */
   { module:"Projekt strony", tag:"Projekt strony", title:"Wygląd i treść strony",
     fields:[
-      { id:"web_pages", type:"text", label:"Jakie podstrony potrzebujesz",
+      { id:"web_pages", type:"text", label:"Jakich podstron potrzebujesz",
         hint:"np. Strona główna, Sklep, Produkt, O nas, Kontakt." },
-      { id:"web_admire", type:"textarea", label:"Strony, które podziwiasz i za co?",
+      { id:"web_admire", type:"textarea", label:"Strony, które Ci się podobają i za co?",
         hint:"Co Cię wciąga: układ, zdjęcia, teksty, doświadczenie zakupowe?" },
       { id:"web_content", type:"choice", label:"Zdjęcia i treści",
         options:["Mamy gotowe","Potrzebujemy, żebyście je stworzyli / pozyskali","Po trochu"] }
@@ -290,22 +290,22 @@ const SECTIONS = [
         hint:"Zaznacz wszystko, co wiesz, że będzie potrzebne. Część jest wbudowana, część wymaga osobnej pracy. Jeśli nie wiesz, co jest standardem, po prostu zaznacz, a doradzimy, co wpływa na czas i koszt.",
         options:["Subskrypcje","Wiele języków","Wiele walut","Opinie o produktach","Zestawy","Program lojalnościowy","Lista życzeń","Quiz / dobór produktu","Karty podarunkowe","Przedsprzedaż","Blog / treści","Niestandardowe animacje / interakcje","Jeszcze nie wiem"] },
       { id:"web_integrations", type:"text", label:"Integracje (mailing, wysyłka, płatności)" },
-      { id:"web_manage", type:"text", label:"Kto będzie zarządzał stroną po uruchomieniu?" }
+      { id:"web_manage", type:"text", label:"Kto będzie zarządzał stroną po launchu?" }
     ]},
 
   /* ----- CORE: LOGISTICS ----- */
   { module:"core", tag:"Na koniec", title:"Kilka ostatnich rzeczy",
     fields:[
-      { id:"deadline", type:"date", label:"Data premiery lub termin, do którego pracujemy" },
-      { id:"legal", type:"text", label:"Kwestie prawne, zgodności lub certyfikacji?" },
+      { id:"deadline", type:"date", label:"Data launchu lub deadline, na który celujemy" },
+      { id:"legal", type:"text", label:"Kwestie prawne, zgodność, certyfikaty?" },
       { id:"assets_link", type:"url", label:"Link do Twoich materiałów",
         hint:"Google Drive lub WeTransfer z dotychczasowym logo, zdjęciami produktów, plikami marki." },
-      { id:"content_interest", type:"choice", label:"Po premierze przyda Ci się wsparcie przy bieżącym contencie?",
-        hint:"Opcjonalne. Prowadzimy też bieżące wizualizacje do social mediów i kampanii na systemie AI, który dla Ciebie budujemy.",
-        options:["Tak, opowiedzcie więcej","Może później","Nie"] },
+      { id:"content_interest", type:"choice", label:"Po launchu przyda Ci się wsparcie przy bieżącym contencie?",
+        hint:"Opcjonalne. Prowadzimy też bieżące wizuale na social media i do kampanii, na systemie AI, który dla Ciebie budujemy.",
+        options:["Tak, chcę wiedzieć więcej","Może później","Nie"] },
       { id:"anything", type:"textarea", label:"Coś jeszcze, co pomoże nam zrobić to dobrze?" },
-      { id:"how_found", type:"text", label:"Co Cię przywiodło do Owlsome?",
-        hint:"Opcjonalne. Czy jakiś projekt przykuł Twoją uwagę?" }
+      { id:"how_found", type:"text", label:"Skąd nas znasz?",
+        hint:"Opcjonalne. Jakiś projekt szczególnie wpadł Ci w oko?" }
     ]}
 ];
 
@@ -347,12 +347,12 @@ function renderIntro(){
       <div class="intro-block">
         <h1>Poznajmy Twoją markę</h1>
         <p class="lead intro-lead">
-          Kilka pytań, żebyśmy mogli dopasować branding i projekt do Twojej wizji.
+          Kilka pytań, żebyśmy mogli dopasować branding i design do Twojej wizji.
           Zajmie to około 10–15 minut. Odpowiedzi zapisują się automatycznie, więc
           możesz przerwać i wrócić w dowolnej chwili na tym urządzeniu.
         </p>
         <button class="btn primary" id="startBtn" style="margin-top:10px">Zaczynamy</button>
-        <p class="footnote">Im więcej nam powiesz, tym celniejsza praca.<br>Jeśli jakieś pytanie nie pasuje, pomiń je.</p>
+        <p class="footnote">Im więcej nam powiesz, tym lepszy efekt.<br>Jeśli jakieś pytanie nie pasuje, pomiń je.</p>
       </div>
     </div>`;
   $("#startBtn").onclick = ()=>{ stage=0; render(); };
@@ -483,7 +483,7 @@ function renderReview(){
   $("#nextBtn").textContent="Wyślij brief";
   $("#backBtn").style.visibility="visible";
 
-  let html = `<h2>Ostatnie spojrzenie</h2>
+  let html = `<h2>Ostatni rzut oka</h2>
     <p class="lead">Sprawdź wszystko. Możesz wrócić i zmienić, co chcesz.</p>`;
   activeSections().forEach(sec=>{
     sec.fields.forEach(f=>{
