@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Owlsome Studio · Project Brief</title>
+
+<!-- Owlsome brand fonts: Sweet Sans via Adobe kit; Canela + Avenir self-hosted -->
+<link rel="stylesheet" href="https://use.typekit.net/evj0uts.css" />
+
+<style>
+  /* Self-hosted brand fonts */
+  @font-face{
+    font-family:"Times Now";
+    src:url("fonts/TimesNow-ExtraLight.woff2") format("woff2");
+    font-weight:200;font-style:normal;font-display:swap;
+  }
+  @font-face{
+    font-family:"Avenir";
+    src:url("fonts/Avenir-Roman.woff2") format("woff2");
+    font-weight:400;font-style:normal;font-display:swap;
+  }
+
+  :root{
+    --bg:#fcfcfa;          /* brand near-white */
+    --card:#ffffff;        /* fields, hair of contrast on the bg */
+    --ink:#1a1a1a;         /* near-black */
+    --muted:#758696;       /* blue-grey */
+    --line:#e2e0d9;        /* soft divider */
+    --accent:#1a1a1a;      /* buttons */
+    --ok:#5a6b52;          /* quiet green */
+    --serif:"Times Now", Georgia, serif;                           /* headlines */
+    --sans:"Avenir", "Helvetica Neue", Arial, sans-serif;          /* body */
+    --eyebrow:"sweet-sans-pro", "Helvetica Neue", Arial, sans-serif;/* small caps labels */
+    --maxw:680px;
+  }
+
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-size:17px;
+    line-height:1.4;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:32px 22px 120px}
+
+  /* Progress */
+  .progress{
+    position:sticky;top:0;z-index:10;
+    background:var(--bg);
+    padding:14px 0 12px;
+    margin-bottom:10px;
+  }
+  .progress .bar{height:3px;background:var(--line);border-radius:3px;overflow:hidden}
+  .progress .bar i{display:block;height:100%;width:0;background:var(--ink);transition:width .35s ease}
+  .progress .meta{
+    display:flex;justify-content:space-between;align-items:baseline;
+    margin-top:8px;font-family:var(--eyebrow);font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink);
+  }
+
+  /* Typography — Canela Light is weight 300, so headings stay light */
+  h1{font-family:var(--serif);font-weight:200;font-size:64px;line-height:.92;margin:0 0 18px;letter-spacing:-.04em}
+  h2{font-family:var(--serif);font-weight:200;font-size:46px;line-height:.92;margin:34px 0 22px;letter-spacing:-.04em}
+  .lead{color:var(--ink);font-size:16px;margin:0 0 26px;max-width:46ch}
+  .section-tag{font-family:var(--eyebrow);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
+
+  /* Fields */
+  .field{margin:0 0 26px}
+  .field > label{display:block;font-size:17px;margin:0 0 4px}
+  .field .hint{display:block;color:var(--muted);font-size:14px;margin:0 0 10px}
+  .req{color:var(--muted);font-size:13px}
+
+  input[type=text],input[type=url],input[type=date],textarea{
+    width:100%;background:var(--card);border:1px solid var(--line);border-radius:10px;
+    padding:13px 14px;font-family:var(--sans);font-size:16px;color:var(--ink);
+    transition:border-color .15s ease,box-shadow .15s ease;
+  }
+  textarea{min-height:108px;resize:vertical;line-height:1.45}
+  input:focus,textarea:focus{outline:none;border-color:var(--ink);box-shadow:0 0 0 3px rgba(26,26,26,.06)}
+  ::placeholder{color:#b3b0a6}
+
+  /* Choice chips */
+  .choices{display:flex;flex-wrap:wrap;gap:9px;margin-top:14px}
+  .chip{
+    border:1px solid var(--line);background:var(--card);border-radius:30px;
+    padding:9px 16px;font-size:15px;cursor:pointer;user-select:none;
+    transition:all .15s ease;
+  }
+  .chip:hover{border-color:var(--muted)}
+  .chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+  /* Scale grid */
+  .scale-row{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;margin:0 0 14px}
+  .scale-row .lbl{font-size:15px}
+  .scale-row .lbl.r{text-align:right;color:var(--muted)}
+  .scale-dots{display:flex;gap:7px}
+  .dot{width:26px;height:26px;border-radius:50%;border:1px solid var(--line);background:var(--card);cursor:pointer;transition:all .12s ease}
+  .dot:hover{border-color:var(--muted)}
+  .dot.on{background:var(--ink);border-color:var(--ink)}
+
+  /* Nav */
+  .nav{
+    position:fixed;left:0;right:0;bottom:0;background:var(--bg);
+    border-top:1px solid var(--line);padding:14px 22px;
+  }
+  .nav .inner{max-width:var(--maxw);margin:0 auto;display:flex;justify-content:space-between;gap:12px}
+  button.btn{
+    font-family:var(--sans);font-size:15px;letter-spacing:.02em;cursor:pointer;
+    border-radius:30px;padding:13px 30px;border:1px solid var(--ink);transition:all .15s ease;
+  }
+  button.primary{background:var(--ink);color:#fff}
+  button.primary:hover{opacity:.85}
+  button.ghost{background:transparent;color:var(--ink)}
+  button.ghost:hover{background:rgba(26,26,26,.05)}
+  button:disabled{opacity:.35;cursor:not-allowed}
+
+  .saved{font-size:12.5px;color:var(--muted);align-self:center}
+
+  /* Review */
+  .review-item{padding:12px 0;border-bottom:1px solid var(--line)}
+  .review-item .q{font-size:13px;color:var(--ink);margin-bottom:3px}
+  .review-item .a{font-size:16px;white-space:pre-wrap}
+  .review-item .a.empty{color:#c0bdb3;font-style:italic}
+
+  .center{text-align:center}
+  .center h1{margin-top:14px}
+  .logo{font-family:var(--serif);font-size:20px;letter-spacing:.02em}
+  .footnote{color:var(--muted);font-size:13px;margin-top:30px}
+
+  /* Intro / done — logo pinned at top, content block centered on the page */
+  .intro{min-height:88vh;display:flex;flex-direction:column;align-items:center;text-align:center}
+  .logo-link{display:block;margin:24px auto 0;width:max-content}
+  .logo-img{width:120px;height:auto;display:block}
+  .intro-block{flex:1;display:flex;flex-direction:column;justify-content:center;align-items:center;padding-top:9vh}
+  .intro h1{font-size:74px;margin:0 0 18px;line-height:.92}     /* bigger, tighter between lines */
+  .intro-lead{font-size:15px;color:var(--ink);max-width:46ch;margin:0 auto 6px;line-height:1.35}
+  .intro .footnote{
+    font-family:var(--eyebrow);text-transform:uppercase;
+    font-size:11px;letter-spacing:.1em;line-height:1.6;color:var(--muted);margin-top:34px;
+  }
+
+  @media(max-width:540px){
+    h1{font-size:44px}h2{font-size:34px;margin-top:26px}.wrap{padding-top:18px}
+    .scale-row{grid-template-columns:1fr;gap:6px}
+    .scale-row .lbl.r{text-align:left}
+    .scale-dots{justify-content:space-between}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="progress" id="progress" style="display:none">
+    <div class="bar"><i id="barFill"></i></div>
+    <div class="meta"><span id="stepName"></span><span id="stepCount"></span></div>
+  </div>
+  <div id="screen"></div>
+</div>
+
+<div class="nav" id="nav" style="display:none">
+  <div class="inner">
+    <button class="btn ghost" id="backBtn">Back</button>
+    <span class="saved" id="savedMsg"></span>
+    <button class="btn primary" id="nextBtn">Next</button>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   OWLSOME STUDIO — PROJECT BRIEF
+   Edit questions in the SECTIONS array below. Each field:
+     { id, type, label, hint, req, options, left, right }
+   types: text | textarea | date | choice | multi | scale | scalegrid
+   `module` on a section: "core" always shows; others show only
+   when selected in the scope gate (q id: scope).
+   ============================================================ */
+
+/* ---- CONFIG: where answers go (fill these in) ---- */
+const FORMSPREE_ENDPOINT = "https://formspree.io/f/REPLACE_ME";   // email to Maja
+const SHEET_ENDPOINT     = "https://script.google.com/macros/s/REPLACE_ME/exec"; // Google Sheet archive
+/* ------------------------------------------------- */
+
+const SECTIONS = [
+  /* ===== intro handled separately ===== */
+
+  /* ----- SCOPE GATE ----- */
+  { module:"core", tag:"Start here", title:"What should we work on?",
+    desc:"Pick everything that's part of this project. The brief adjusts to show only what's relevant.",
+    fields:[
+      { id:"scope", type:"multi", req:true, label:"Project scope",
+        options:["Brand + Launch Engine","Packaging","Web design","Web build"] }
+    ]},
+
+  /* ----- CORE: ESSENTIALS (always shown, kept light for add-on-only clients) ----- */
+  { module:"core", tag:"Essentials", title:"The essentials",
+    fields:[
+      { id:"brand_name", type:"text", req:true, label:"Full brand name",
+        hint:"Exactly as it should appear in the logo." },
+      { id:"brand_story", type:"textarea", req:true, label:"In a few sentences, what is the brand and the story behind it?",
+        hint:"Origin, philosophy, what you make." },
+      { id:"markets", type:"text", label:"Which markets and languages?" }
+    ]},
+
+  /* ===== MODULE: BRAND + LAUNCH ENGINE (full brand discovery) ===== */
+  { module:"Brand + Launch Engine", tag:"Your brand", title:"The deeper picture",
+    fields:[
+      { id:"brand_diff", type:"textarea", req:true, label:"What makes it different? What problem does it solve?" },
+      { id:"brand_oneline", type:"textarea", label:"If someone remembers one thing about your brand, what should it be?" },
+      { id:"tagline", type:"text", label:"Tagline?",
+        hint:"If you have one: what is it, and should it live inside the logo or only in communication?" }
+    ]},
+
+  { module:"Brand + Launch Engine", tag:"Audience & market", title:"Who it's for",
+    fields:[
+      { id:"audience", type:"textarea", req:true, label:"Who is it for?",
+        hint:"Age, lifestyle, values, not just demographics." },
+      { id:"price_pos", type:"choice", label:"Price positioning",
+        options:["Mass / accessible","Mid-market","Premium","Luxury"] },
+      { id:"competitors", type:"text", label:"Main competitors",
+        hint:"Add links if you can." },
+      { id:"competitor_view", type:"textarea", label:"What do you like or dislike about how they look?" }
+    ]},
+
+  { module:"Brand + Launch Engine", tag:"Character & tone", title:"How the brand should feel",
+    fields:[
+      { id:"personality", type:"scalegrid", label:"Where does the brand sit?",
+        hint:"Tap a dot from one side to the other.",
+        rows:[
+          ["Feminine","Masculine"],["Young","Mature"],["Luxury","Economical"],
+          ["Modern","Classic"],["Serious","Playful"],["Loud","Quiet"],
+          ["Simple","Complex"],["Subtle","Bold"],["Dark","Light"]
+        ]},
+      { id:"three_words", type:"text", label:"Pick 3 words that should describe the brand",
+        hint:"e.g. warm, clinical, effortless." }
+    ]},
+
+  { module:"Brand + Launch Engine", tag:"Visual direction", title:"The look",
+    fields:[
+      { id:"moodboard_link", type:"url", label:"Moodboard / Pinterest / inspiration link",
+        hint:"Paste a link. Google Drive or Pinterest both work." },
+      { id:"admire", type:"textarea", label:"Brands whose look you admire (any industry) and why" },
+      { id:"colors", type:"text", label:"Colors you love / colors to avoid" },
+      { id:"palette", type:"multi", label:"Palette feeling",
+        options:["Muted","Pastel","Saturated","Monochrome","Earthy","Bright & fresh"] },
+      { id:"type_feel", type:"choice", label:"Typography feeling",
+        options:["Classic serif","Modern sans","Elegant / refined","Bold / strong","Handwritten","A mix"] },
+      { id:"logo_type", type:"choice", label:"Logo type you lean toward",
+        options:["Wordmark only","Symbol + text","Symbol inside the lettering","Not sure, guide us"] },
+      { id:"logo_link", type:"url", label:"A few logos or visuals that capture the direction",
+        hint:"Paste a Drive / Pinterest link." }
+    ]},
+
+  /* ===== MODULE: PACKAGING ===== */
+  { module:"Packaging", tag:"Packaging", title:"The products",
+    fields:[
+      { id:"products", type:"textarea", req:true, label:"List the products we'll design",
+        hint:"Name, capacity, short description and any special features, one per line." },
+      { id:"front_copy", type:"textarea", req:true, label:"Front-of-pack copy for each SKU",
+        hint:"Name, capacity, short descriptor as it should read on the front." },
+      { id:"pack_format", type:"text", req:true, label:"Format and material in mind",
+        hint:"Glass jar, bottle, tube, box. Add a reference link if you have one." },
+      { id:"pack_finish", type:"multi", label:"Print finishes you'd love",
+        options:["Foil stamping","Emboss / deboss","Spot UV","Matte","None","Not sure"] },
+      { id:"pack_where", type:"choice", label:"Where will they be sold?",
+        options:["Online only","Retail","Both"] },
+      { id:"pack_reg", type:"text", label:"Any sustainability or regulatory requirements?" }
+    ]},
+
+  /* ===== MODULE: WEB DESIGN ===== */
+  { module:"Web design", tag:"Web design", title:"Website look & content",
+    fields:[
+      { id:"web_pages", type:"text", label:"Pages you need",
+        hint:"e.g. Home, Shop, Product, About, Contact." },
+      { id:"web_admire", type:"textarea", label:"Websites you admire, and what for?",
+        hint:"What pulls you in: layout, photography, copy, the shopping experience?" },
+      { id:"web_content", type:"choice", label:"Imagery & content",
+        options:["We have it ready","We need you to create / source it","A mix"] }
+    ]},
+
+  /* ===== MODULE: WEB BUILD ===== */
+  { module:"Web build", tag:"Web build", title:"Website build & setup",
+    fields:[
+      { id:"web_platform", type:"choice", label:"Platform",
+        options:["Shopify","Webflow","Not sure, guide us"] },
+      { id:"web_features", type:"multi", label:"Features you need",
+        hint:"Pick anything you know you'll need. Some are built in, some need custom work. If you're not sure what's standard, just flag it and we'll advise on what affects time and cost.",
+        options:["Subscriptions","Multi-language","Multi-currency","Product reviews","Bundles / sets","Loyalty / rewards","Wishlist","Quiz / product finder","Gift cards","Pre-orders","Blog / editorial","Custom animations / interactions","Not sure yet"] },
+      { id:"web_integrations", type:"text", label:"Integrations (email, shipping, payments)" },
+      { id:"web_manage", type:"text", label:"Who will manage the site after launch?" }
+    ]},
+
+  /* ----- CORE: LOGISTICS ----- */
+  { module:"core", tag:"Wrapping up", title:"A few last things",
+    fields:[
+      { id:"deadline", type:"date", label:"Launch date or deadline to work toward" },
+      { id:"legal", type:"text", label:"Any legal, compliance or certification considerations?" },
+      { id:"assets_link", type:"url", label:"Link to your assets",
+        hint:"Google Drive or WeTransfer with existing logo, product photos, brand files." },
+      { id:"content_interest", type:"choice", label:"After launch, would you want help with ongoing content?",
+        hint:"Optional. We also run ongoing social and campaign visuals on the AI system we build for you.",
+        options:["Yes, tell me more","Maybe later","No"] },
+      { id:"anything", type:"textarea", label:"Anything else that will help us make this a success?" },
+      { id:"how_found", type:"text", label:"What brought you to Owlsome?",
+        hint:"Optional. Was there a project that caught your eye?" }
+    ]}
+];
+
+/* ============================================================
+   ENGINE
+   ============================================================ */
+const store = "owlsome_brief_v1";
+let data = JSON.parse(localStorage.getItem(store) || "{}");
+let stage = "intro";      // "intro" | index number | "review" | "done"
+
+const $ = s => document.querySelector(s);
+const screen = $("#screen");
+const nav = $("#nav"), prog = $("#progress");
+
+function save(){ localStorage.setItem(store, JSON.stringify(data)); flashSaved(); }
+let savedT;
+function flashSaved(){
+  const m=$("#savedMsg"); m.textContent="Saved";
+  clearTimeout(savedT); savedT=setTimeout(()=>m.textContent="",1500);
+}
+
+function activeSections(){
+  const scope = data.scope || [];
+  return SECTIONS.filter(s => s.module==="core" || scope.includes(s.module));
+}
+
+function render(){
+  if(stage==="intro") return renderIntro();
+  if(stage==="review") return renderReview();
+  if(stage==="done")   return renderDone();
+  renderSection(stage);
+}
+
+function renderIntro(){
+  prog.style.display="none"; nav.style.display="none";
+  screen.innerHTML = `
+    <div class="center intro">
+      <a href="https://www.weareowlsome.com" class="logo-link" aria-label="Owlsome Studio"><img src="img/logo.png" alt="Owlsome Studio" class="logo-img" onerror="this.style.display='none'" /></a>
+      <div class="intro-block">
+        <h1>Let's get to know your brand</h1>
+        <p class="lead intro-lead">
+          A few questions so we can tailor the branding and design to your vision.
+          It takes about 10–15 minutes. Your answers save automatically, so you can
+          stop and come back any time on this device.
+        </p>
+        <button class="btn primary" id="startBtn" style="margin-top:10px">Begin</button>
+        <p class="footnote">The more you share, the sharper the work.<br>If a question doesn't fit, skip it.</p>
+      </div>
+    </div>`;
+  $("#startBtn").onclick = ()=>{ stage=0; render(); };
+}
+
+function renderSection(i){
+  const secs = activeSections();
+  const sec = secs[i];
+  prog.style.display="block"; nav.style.display="block";
+  const total = secs.length;
+  $("#barFill").style.width = ((i)/(total))*100 + "%";
+  $("#stepName").textContent = sec.tag;
+  $("#stepCount").textContent = `${i+1} / ${total}`;
+
+  let html = `<h2>${sec.title}</h2>`;
+  if(sec.desc) html += `<p class="lead">${sec.desc}</p>`;
+  html += `<div style="margin-top:18px">`;
+  sec.fields.forEach(f => html += renderField(f));
+  html += `</div>`;
+  screen.innerHTML = html;
+
+  bindFields(sec);
+
+  $("#backBtn").style.visibility = (i===0) ? "hidden" : "visible";
+  $("#nextBtn").textContent = (i===secs.length-1) ? "Review" : "Next";
+}
+
+function renderField(f){
+  const v = data[f.id];
+  const reqMark = f.req ? ` <span class="req">· required</span>` : "";
+  let inner = "";
+  if(f.type==="text")  inner = `<input type="text" data-id="${f.id}" value="${esc(v||"")}" />`;
+  if(f.type==="url")   inner = `<input type="url"  data-id="${f.id}" value="${esc(v||"")}" placeholder="https://" />`;
+  if(f.type==="date")  inner = `<input type="date" data-id="${f.id}" value="${esc(v||"")}" />`;
+  if(f.type==="textarea") inner = `<textarea data-id="${f.id}">${esc(v||"")}</textarea>`;
+
+  if(f.type==="choice"){
+    inner = `<div class="choices" data-id="${f.id}" data-multi="0">` +
+      f.options.map(o=>`<span class="chip ${v===o?"on":""}" data-val="${esc(o)}">${o}</span>`).join("") + `</div>`;
+  }
+  if(f.type==="multi"){
+    const arr = Array.isArray(v)?v:[];
+    inner = `<div class="choices" data-id="${f.id}" data-multi="1">` +
+      f.options.map(o=>`<span class="chip ${arr.includes(o)?"on":""}" data-val="${esc(o)}">${o}</span>`).join("") + `</div>`;
+  }
+  if(f.type==="scalegrid"){
+    const sv = v||{};
+    inner = `<div class="scalegrid" data-id="${f.id}">` + f.rows.map((r,ri)=>{
+      const cur = sv[ri];
+      const dots = [1,2,3,4,5].map(n=>`<span class="dot ${cur===n?"on":""}" data-row="${ri}" data-n="${n}"></span>`).join("");
+      return `<div class="scale-row"><span class="lbl">${r[0]}</span><span class="scale-dots">${dots}</span><span class="lbl r">${r[1]}</span></div>`;
+    }).join("") + `</div>`;
+  }
+
+  return `<div class="field">
+    <label>${f.label}${reqMark}</label>
+    ${f.hint?`<span class="hint">${f.hint}</span>`:""}
+    ${inner}
+  </div>`;
+}
+
+function bindFields(sec){
+  screen.querySelectorAll("input,textarea").forEach(el=>{
+    el.addEventListener("input", ()=>{ data[el.dataset.id]=el.value; save(); });
+  });
+  screen.querySelectorAll(".choices").forEach(group=>{
+    const id = group.dataset.id, multi = group.dataset.multi==="1";
+    group.querySelectorAll(".chip").forEach(chip=>{
+      chip.addEventListener("click", ()=>{
+        const val = chip.dataset.val;
+        if(multi){
+          let arr = Array.isArray(data[id])?data[id]:[];
+          if(arr.includes(val)){ arr=arr.filter(x=>x!==val); chip.classList.remove("on"); }
+          else { arr.push(val); chip.classList.add("on"); }
+          data[id]=arr;
+        } else {
+          group.querySelectorAll(".chip").forEach(c=>c.classList.remove("on"));
+          chip.classList.add("on"); data[id]=val;
+        }
+        save();
+      });
+    });
+  });
+  screen.querySelectorAll(".scalegrid").forEach(grid=>{
+    const id = grid.dataset.id;
+    grid.querySelectorAll(".dot").forEach(dot=>{
+      dot.addEventListener("click", ()=>{
+        const row=+dot.dataset.row, n=+dot.dataset.n;
+        const obj = (typeof data[id]==="object" && data[id])?data[id]:{};
+        obj[row]=n; data[id]=obj;
+        grid.querySelectorAll(`.dot[data-row="${row}"]`).forEach(d=>d.classList.toggle("on", +d.dataset.n===n));
+        save();
+      });
+    });
+  });
+}
+
+function validate(sec){
+  for(const f of sec.fields){
+    if(!f.req) continue;
+    const v = data[f.id];
+    const empty = v===undefined || v==="" || (Array.isArray(v)&&!v.length);
+    if(empty){ return f.label; }
+  }
+  return null;
+}
+
+$("#nextBtn").onclick = ()=>{
+  if(stage==="review"){ submit(); return; }
+  const secs = activeSections();
+  const sec = secs[stage];
+  const missing = validate(sec);
+  if(missing){ alert("Please fill in: " + missing.replace(/<[^>]+>/g,"")); return; }
+  if(stage===secs.length-1){ stage="review"; } else { stage++; }
+  window.scrollTo(0,0); render();
+};
+$("#backBtn").onclick = ()=>{
+  if(stage==="review"){ stage=activeSections().length-1; }
+  else if(typeof stage==="number" && stage>0){ stage--; }
+  window.scrollTo(0,0); render();
+};
+
+function renderReview(){
+  prog.style.display="block"; nav.style.display="block";
+  $("#barFill").style.width="100%";
+  $("#stepName").textContent="Review";
+  $("#stepCount").textContent="Almost done";
+  $("#nextBtn").textContent="Submit brief";
+  $("#backBtn").style.visibility="visible";
+
+  let html = `<h2>One last look</h2>
+    <p class="lead">Check it over. You can go Back to change anything.</p>`;
+  activeSections().forEach(sec=>{
+    sec.fields.forEach(f=>{
+      html += `<div class="review-item"><div class="q">${f.label.replace(/<[^>]+>/g,"")}</div>
+        <div class="a ${isEmpty(data[f.id])?"empty":""}">${fmt(data[f.id])||"Not answered"}</div></div>`;
+    });
+  });
+  screen.innerHTML = html;
+}
+
+function submit(){
+  $("#nextBtn").disabled=true; $("#nextBtn").textContent="Sending…";
+  const payload = buildPayload();
+
+  const jobs = [];
+  if(!FORMSPREE_ENDPOINT.includes("REPLACE"))
+    jobs.push(fetch(FORMSPREE_ENDPOINT,{method:"POST",headers:{"Accept":"application/json","Content-Type":"application/json"},body:JSON.stringify(payload)}));
+  if(!SHEET_ENDPOINT.includes("REPLACE"))
+    jobs.push(fetch(SHEET_ENDPOINT,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)}));
+
+  Promise.allSettled(jobs).then(()=>{
+    localStorage.removeItem(store);
+    stage="done"; render();
+  });
+}
+
+function buildPayload(){
+  const out = { _brand: data.brand_name||"(no name)", _submitted: new Date().toISOString() };
+  activeSections().forEach(sec=>{
+    sec.fields.forEach(f=>{ out[f.label.replace(/<[^>]+>/g,"").trim()] = fmt(data[f.id]); });
+  });
+  return out;
+}
+
+function renderDone(){
+  prog.style.display="none"; nav.style.display="none";
+  screen.innerHTML = `
+    <div class="center intro done">
+      <a href="https://www.weareowlsome.com" class="logo-link" aria-label="Owlsome Studio"><img src="img/logo.png" alt="Owlsome Studio" class="logo-img" onerror="this.style.display='none'" /></a>
+      <div class="intro-block">
+        <h1>Thank you</h1>
+        <p class="lead intro-lead">
+          We've got your brief and we're excited to start. We'll be in touch shortly
+          with next steps.
+        </p>
+      </div>
+    </div>`;
+}
+
+/* ---- helpers ---- */
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+function isEmpty(v){ return v===undefined||v===""||(Array.isArray(v)&&!v.length)||(typeof v==="object"&&v&&!Array.isArray(v)&&!Object.keys(v).length); }
+function fmt(v){
+  if(isEmpty(v)) return "";
+  if(Array.isArray(v)) return v.join(", ");
+  if(typeof v==="object"){
+    // scale grid -> readable
+    return Object.entries(v).map(([k,n])=>{
+      const grid = SECTIONS.flatMap(s=>s.fields).find(f=>f.type==="scalegrid");
+      const row = grid? grid.rows[k] : null;
+      return row ? `${row[0]}↔${row[1]}: ${n}/5` : `${k}: ${n}`;
+    }).join("  ·  ");
+  }
+  return esc(v);
+}
+
+render();
+</script>
+</body>
+</html>
