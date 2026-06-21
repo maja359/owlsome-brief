@@ -6,8 +6,12 @@
 <meta name="robots" content="noindex, nofollow" />
 <title>Owlsome Studio · Brief projektu</title>
 
-<!-- Owlsome brand fonts: Sweet Sans via Adobe kit; Canela + Avenir self-hosted -->
+<!-- Owlsome brand fonts: Sweet Sans via Adobe kit; Times Now self-hosted -->
 <link rel="stylesheet" href="https://use.typekit.net/evj0uts.css" />
+<!-- PL body font: Montserrat (full Polish glyph support; Avenir woff2 subset lacks them) -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap" />
 
 <style>
   /* Self-hosted brand fonts */
@@ -15,11 +19,6 @@
     font-family:"Times Now";
     src:url("../fonts/TimesNow-ExtraLight.woff2") format("woff2");
     font-weight:200;font-style:normal;font-display:swap;
-  }
-  @font-face{
-    font-family:"Avenir";
-    src:url("../fonts/Avenir-Roman.woff2") format("woff2");
-    font-weight:400;font-style:normal;font-display:swap;
   }
 
   :root{
@@ -31,7 +30,7 @@
     --accent:#1a1a1a;      /* buttons */
     --ok:#5a6b52;          /* quiet green */
     --serif:"Times Now", Georgia, serif;                           /* headlines */
-    --sans:"Avenir", "Helvetica Neue", Arial, sans-serif;          /* body */
+    --sans:"Montserrat", "Helvetica Neue", Arial, sans-serif;      /* body */
     --eyebrow:"sweet-sans-pro", "Helvetica Neue", Arial, sans-serif;/* small caps labels */
     --maxw:680px;
   }
