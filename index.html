@@ -82,6 +82,7 @@
   }
   textarea{min-height:108px;resize:vertical;line-height:1.45}
   input:focus,textarea:focus{outline:none;border-color:var(--ink);box-shadow:0 0 0 3px rgba(26,26,26,.06)}
+  .other-input{margin-top:8px}
   ::placeholder{color:#b3b0a6}
 
   /* Choice chips */
@@ -244,10 +245,12 @@ const SECTIONS = [
       { id:"moodboard_link", type:"url", label:"Moodboard / Pinterest / inspiration link",
         hint:"Paste a link. Google Drive or Pinterest both work." },
       { id:"admire", type:"textarea", label:"Brands whose look you admire (any industry) and why" },
-      { id:"colors", type:"text", label:"Colors you love / colors to avoid" },
-      { id:"palette", type:"multi", label:"Palette feeling",
+      { id:"colors", type:"textarea", label:"Colors you love / colors to avoid" },
+      { id:"palette", type:"multi", other:true, label:"Palette feeling",
+        hint:"You can pick more than one.",
         options:["Muted","Pastel","Saturated","Monochrome","Earthy","Bright & fresh"] },
-      { id:"type_feel", type:"choice", label:"Typography feeling",
+      { id:"type_feel", type:"multi", other:true, label:"Typography feeling",
+        hint:"You can pick more than one.",
         options:["Classic serif","Modern sans","Elegant / refined","Bold / strong","Handwritten","A mix"] },
       { id:"logo_type", type:"choice", label:"Logo type you lean toward",
         options:["Wordmark only","Symbol + text","Symbol inside the lettering","Not sure, guide us"] },
@@ -287,7 +290,7 @@ const SECTIONS = [
     fields:[
       { id:"web_platform", type:"choice", label:"Platform",
         options:["Shopify","Webflow","Not sure, guide us"] },
-      { id:"web_features", type:"multi", label:"Features you need",
+      { id:"web_features", type:"multi", other:true, label:"Features you need",
         hint:"Pick anything you know you'll need. Some are built in, some need custom work. If you're not sure what's standard, just flag it and we'll advise on what affects time and cost.",
         options:["Subscriptions","Multi-language","Multi-currency","Product reviews","Bundles / sets","Loyalty / rewards","Wishlist","Quiz / product finder","Gift cards","Pre-orders","Blog / editorial","Custom animations / interactions","Not sure yet"] },
       { id:"web_integrations", type:"text", label:"Integrations (email, shipping, payments)" },
@@ -398,6 +401,7 @@ function renderField(f){
     const arr = Array.isArray(v)?v:[];
     inner = `<div class="choices" data-id="${f.id}" data-multi="1">` +
       f.options.map(o=>`<span class="chip ${arr.includes(o)?"on":""}" data-val="${esc(o)}">${o}</span>`).join("") + `</div>`;
+    if(f.other) inner += `<input type="text" class="other-input" data-id="${f.id}_other" value="${esc(data[f.id+"_other"]||"")}" placeholder="Something else? Add it here" />`;
   }
   if(f.type==="scalegrid"){
     const sv = v||{};
@@ -488,8 +492,9 @@ function renderReview(){
     <p class="lead">Check it over. You can go Back to change anything.</p>`;
   activeSections().forEach(sec=>{
     sec.fields.forEach(f=>{
+      const av = valOf(f);
       html += `<div class="review-item"><div class="q">${f.label.replace(/<[^>]+>/g,"")}</div>
-        <div class="a ${isEmpty(data[f.id])?"empty":""}">${fmt(data[f.id])||"Not answered"}</div></div>`;
+        <div class="a ${av?"":"empty"}">${av||"Not answered"}</div></div>`;
     });
   });
   screen.innerHTML = html;
@@ -511,10 +516,17 @@ function submit(){
   });
 }
 
+function valOf(f){
+  let val = fmt(data[f.id]);
+  if(f.other && !isEmpty(data[f.id+"_other"]))
+    val = val ? val + ", " + fmt(data[f.id+"_other"]) : fmt(data[f.id+"_other"]);
+  return val;
+}
+
 function buildPayload(){
   const out = { _brand: data.brand_name||"(no name)", _submitted: new Date().toISOString() };
   activeSections().forEach(sec=>{
-    sec.fields.forEach(f=>{ out[f.label.replace(/<[^>]+>/g,"").trim()] = fmt(data[f.id]); });
+    sec.fields.forEach(f=>{ out[f.label.replace(/<[^>]+>/g,"").trim()] = valOf(f); });
   });
   return out;
 }

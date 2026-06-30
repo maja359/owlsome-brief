@@ -81,6 +81,7 @@
   }
   textarea{min-height:108px;resize:vertical;line-height:1.45}
   input:focus,textarea:focus{outline:none;border-color:var(--ink);box-shadow:0 0 0 3px rgba(26,26,26,.06)}
+  .other-input{margin-top:8px}
   ::placeholder{color:#b3b0a6}
 
   /* Choice chips */
@@ -243,10 +244,12 @@ const SECTIONS = [
       { id:"moodboard_link", type:"url", label:"Moodboard / Pinterest / link z inspiracjami",
         hint:"Wklej link. Google Drive albo Pinterest, oba działają." },
       { id:"admire", type:"textarea", label:"Marki, których wygląd podziwiasz (z dowolnej branży) i dlaczego" },
-      { id:"colors", type:"text", label:"Kolory, które kochasz / których lepiej unikać" },
-      { id:"palette", type:"multi", label:"Charakter palety",
+      { id:"colors", type:"textarea", label:"Kolory, które kochasz / których lepiej unikać" },
+      { id:"palette", type:"multi", other:true, label:"Charakter palety",
+        hint:"Możesz zaznaczyć więcej niż jeden.",
         options:["Stonowana","Pastelowa","Nasycona","Monochromatyczna","Ziemista","Jasna i świeża"] },
-      { id:"type_feel", type:"choice", label:"Charakter typografii",
+      { id:"type_feel", type:"multi", other:true, label:"Charakter typografii",
+        hint:"Możesz zaznaczyć więcej niż jeden.",
         options:["Klasyczna szeryfowa","Nowoczesna bezszeryfowa","Elegancka / wyrafinowana","Mocna / wyrazista","Odręczna","Mieszana"] },
       { id:"logo_type", type:"choice", label:"W stronę jakiego logo się skłaniasz?",
         options:["Sam napis (wordmark)","Symbol + napis","Symbol wpleciony w napis","Nie wiem, doradźcie"] },
@@ -286,7 +289,7 @@ const SECTIONS = [
     fields:[
       { id:"web_platform", type:"choice", label:"Platforma",
         options:["Shopify","Webflow","Nie wiem, doradźcie"] },
-      { id:"web_features", type:"multi", label:"Funkcje, których potrzebujesz",
+      { id:"web_features", type:"multi", other:true, label:"Funkcje, których potrzebujesz",
         hint:"Zaznacz wszystko, co wiesz, że będzie potrzebne. Część jest wbudowana, część wymaga osobnej pracy. Jeśli nie wiesz, co jest standardem, po prostu zaznacz, a doradzimy, co wpływa na czas i koszt.",
         options:["Subskrypcje","Wiele języków","Wiele walut","Opinie o produktach","Zestawy","Program lojalnościowy","Lista życzeń","Quiz / dobór produktu","Karty podarunkowe","Przedsprzedaż","Blog / treści","Niestandardowe animacje / interakcje","Jeszcze nie wiem"] },
       { id:"web_integrations", type:"text", label:"Integracje (mailing, wysyłka, płatności)" },
@@ -397,6 +400,7 @@ function renderField(f){
     const arr = Array.isArray(v)?v:[];
     inner = `<div class="choices" data-id="${f.id}" data-multi="1">` +
       f.options.map(o=>`<span class="chip ${arr.includes(o)?"on":""}" data-val="${esc(o)}">${o}</span>`).join("") + `</div>`;
+    if(f.other) inner += `<input type="text" class="other-input" data-id="${f.id}_other" value="${esc(data[f.id+"_other"]||"")}" placeholder="Coś innego? Dopisz tutaj" />`;
   }
   if(f.type==="scalegrid"){
     const sv = v||{};
@@ -487,8 +491,9 @@ function renderReview(){
     <p class="lead">Sprawdź wszystko. Możesz wrócić i zmienić, co chcesz.</p>`;
   activeSections().forEach(sec=>{
     sec.fields.forEach(f=>{
+      const av = valOf(f);
       html += `<div class="review-item"><div class="q">${f.label.replace(/<[^>]+>/g,"")}</div>
-        <div class="a ${isEmpty(data[f.id])?"empty":""}">${fmt(data[f.id])||"Brak odpowiedzi"}</div></div>`;
+        <div class="a ${av?"":"empty"}">${av||"Brak odpowiedzi"}</div></div>`;
     });
   });
   screen.innerHTML = html;
@@ -510,10 +515,17 @@ function submit(){
   });
 }
 
+function valOf(f){
+  let val = fmt(data[f.id]);
+  if(f.other && !isEmpty(data[f.id+"_other"]))
+    val = val ? val + ", " + fmt(data[f.id+"_other"]) : fmt(data[f.id+"_other"]);
+  return val;
+}
+
 function buildPayload(){
   const out = { _lang:"PL", _brand: data.brand_name||"(brak nazwy)", _submitted: new Date().toISOString() };
   activeSections().forEach(sec=>{
-    sec.fields.forEach(f=>{ out[f.label.replace(/<[^>]+>/g,"").trim()] = fmt(data[f.id]); });
+    sec.fields.forEach(f=>{ out[f.label.replace(/<[^>]+>/g,"").trim()] = valOf(f); });
   });
   return out;
 }
